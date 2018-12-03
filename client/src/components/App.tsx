@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Container, Columns, Button } from 'react-bulma-components/full';
 import Transaction from 'budget-app-interface/models/Transaction';
 import BudgetCategory from 'budget-app-interface/models/BudgetCategory';
-import { getBudgetCategories } from 'src/api/budgetCategory';
+import { getBudgetCategories, postBudgetCategory } from 'src/api/budgetCategory';
 
 import './App.css';
 
@@ -12,7 +12,7 @@ interface Props {
 interface State {
     transactions: Array<Transaction>;
     budgetCategories: Array<BudgetCategory>;
-    newBudgetCategory: BudgetCategory | null;
+    newBudgetCategory: any;
     error?: Error;
 }
 
@@ -24,6 +24,10 @@ class App extends React.Component<Props, State> {
             budgetCategories: [],
             newBudgetCategory: null
         };
+
+        this.handleNewBudgetCategoryTitleChange = this.handleNewBudgetCategoryTitleChange.bind(this);
+        this.submitNewBudgetCategory = this.submitNewBudgetCategory.bind(this);
+        this.handleNewBudgetCategoryAmountChange = this.handleNewBudgetCategoryAmountChange.bind(this);
     }
 
     componentDidMount() {
@@ -46,26 +50,42 @@ class App extends React.Component<Props, State> {
         );
     }
 
-    private handleNewBudgetCategoryTitleChange(event) {
-        this.setState()
+    private handleNewBudgetCategoryTitleChange(event: any) {
+        event.persist();
+        this.setState(prevState => ({
+            newBudgetCategory: {
+                ...(prevState.newBudgetCategory || {}),
+                title: event.target.value
+            }
+        }));
+        event.preventDefault();
     }
 
-    private handleNewBudgetCategoryTitleChange(event) {
-
+    private handleNewBudgetCategoryAmountChange(event: any) {
+        event.persist();
+        this.setState(prevState => ({
+            newBudgetCategory: {
+                ...(prevState.newBudgetCategory || {}),
+                amount: event.target.value
+            }
+        }));
+        event.preventDefault();
     }
 
-    private submitNewBudgetCategory() {
-
+    private submitNewBudgetCategory(event: any) {
+        const budgetCategory: BudgetCategory = this.state.newBudgetCategory;
+        postBudgetCategory(budgetCategory);
+        event.preventDefault();
     }
 
     private getNewBudgetCategory() {
         return (
             <Columns>
                 <Columns.Column className="is-4">
-                    <input className="input" type="text" placeholder="New Budget Category" onChange={this.handleChange}></input>
+                    <input className="input" type="text" placeholder="New Budget Category" onChange={this.handleNewBudgetCategoryTitleChange}></input>
                 </Columns.Column>
                 <Columns.Column className="is-2">
-                    <input className="input" type="text" placeholder="Amount" onChange={this.handleChange}></input>
+                    <input className="input" type="text" placeholder="Amount" onChange={this.handleNewBudgetCategoryAmountChange}></input>
                 </Columns.Column>
                 <Columns.Column className="is-1">
                     <Button onClick={this.submitNewBudgetCategory}>+</Button>

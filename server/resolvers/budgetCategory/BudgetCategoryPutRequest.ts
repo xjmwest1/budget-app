@@ -1,4 +1,4 @@
-import BudgetCategory from '../../models/BudgetCategory';
+import BudgetCategory from 'budget-app-interface/models/BudgetCategory';
 
 class BudgetCategoryPutRequest {
     budgetCategory: BudgetCategory;

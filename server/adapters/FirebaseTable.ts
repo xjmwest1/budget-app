@@ -15,7 +15,7 @@ export function getFirebaseTableInfo(table: FirebaseTable): FirebaseTableInfo {
         case FirebaseTable.Users:
             return { name: 'users' };
         case FirebaseTable.BudgetCategories:
-            return { name: 'budgetCatgories' };
+            return { name: 'budgetCategories' };
     }
 }
 

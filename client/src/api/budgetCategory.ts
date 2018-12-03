@@ -17,8 +17,11 @@ function getBudgetCategories(): Promise<BudgetCategory[]> {
 }
 
 function postBudgetCategory(budgetCategory: BudgetCategory): Promise<BudgetCategory> {
-    return fetch('/api/budgetCategories', {
+    return fetch('/api/budgetCategory', {
             method: 'post',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
             body: JSON.stringify(budgetCategory)
         })
         .then(response => response.json())
@@ -28,7 +31,7 @@ function postBudgetCategory(budgetCategory: BudgetCategory): Promise<BudgetCateg
 }
 
 function updateBudgetCategory(budgetCategory: BudgetCategory): Promise<BudgetCategory> {
-    return fetch('/api/budgetCategories', {
+    return fetch('/api/budgetCategory', {
         method: 'update',
         body: JSON.stringify(budgetCategory)
     })

@@ -26,13 +26,14 @@ class FirebaseAdapter {
         });
     }
 
-    async putItem(table: FirebaseTable, item: FirebaseModel): Promise<void> {
+    async putItem(table: FirebaseTable, item: FirebaseModel): Promise<FirebaseModel> {
         const tableInfo: FirebaseTableInfo = getFirebaseTableInfo(table);
         
         if (item.id) {
-            return this.updateItem(tableInfo, item);
+            return this.updateItem(tableInfo, item).then(() => item );
         }
 
+        console.log(item);
         const newItemRef = this.database.ref(tableInfo.name).push();
         return newItemRef.set(item);
     }
